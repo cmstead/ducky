@@ -1,5 +1,5 @@
 .App {
-  width: 50%;
+  width: 40%;
   margin: 0 auto;
 
   h1 {
@@ -42,13 +42,13 @@
       color: #999;
       margin: 5px 0;
       line-height: 1em;
-      width: 15%;
+      width: 17%;
       float: left;
     }
 
     .message {
-      float: left;
-      width: 75%;
+      // float: left;
+      width: 80%;
       padding: 0;
 
       p {
@@ -56,6 +56,36 @@
         padding: 0;
         margin: 0;
       }
+    }
+  }
+}
+
+@media screen and (max-width: 1280px) {
+  .App {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 968px) {
+  .App {
+    width: 70%;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .App {
+    width: 90%;
+    .chat-msg {
+      .date {
+        width: 100%;
+        float: none;
+      }
+
+      .message {
+        width: 100%;
+        float: none;
+      }
+
     }
   }
 }
