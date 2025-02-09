@@ -1,13 +1,13 @@
 import "./App.scss";
-import { useState } from "react";
+import useStoredState from "./useStoredState";
 import Markdown from "react-markdown";
 
 function App() {
-  const [chatLog, updateChatLog] = useState([]);
+  const [chatLog, updateChatLog] = useStoredState('duckyState', []);
 
   const getFormattedDate = (date) => {
     return `${date.toLocaleTimeString()}`;
-  }
+  };
 
   const appendToChatLog = (event) => {
     if (event.key === 'Enter') {
@@ -16,7 +16,7 @@ function App() {
           ...chatLog,
           {
             message: event.target.value.trim(),
-            date: new Date()
+            date: new Date().toLocaleTimeString()
           }
         ]);
       }
@@ -34,7 +34,7 @@ function App() {
       <div id="chat-log">
         {chatLog.map((msg, i) => (
           <div key={i} className="chat-msg">
-            <div className="date">{getFormattedDate(msg.date)}</div>
+            <div className="date">{msg.date}</div>
             <div className="message">
               <Markdown>{msg.message}</Markdown>
             </div>
@@ -43,7 +43,7 @@ function App() {
       </div>
 
       {
-        chatLog.length > 0 ? <div class="clear-log" ><button onClick={() => clearLog()}>clear chat</button></div> : null
+        chatLog.length > 0 ? <div className="clear-log" ><button onClick={() => clearLog()}>clear chat</button></div> : null
       }
       <div id="chat-input">
         <textarea
@@ -54,7 +54,7 @@ function App() {
           rows="5"
         />
       </div>
-      <div class="info">This supports markdown.</div>
+      <div className="info">This supports markdown.</div>
     </div>
   );
 }
