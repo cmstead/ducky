@@ -1,27 +1,47 @@
 import "./App.scss";
+import { useState } from "react";
 import useStoredState from "./useStoredState";
 import Markdown from "react-markdown";
 
+const KEY_UP = 'up';
+const KEY_DOWN = 'down';
+
 function App() {
   const [chatLog, updateChatLog] = useStoredState('duckyState', []);
+  const [shiftState, updateShiftState] = useState(KEY_UP);
 
-  const getFormattedDate = (date) => {
-    return `${date.toLocaleTimeString()}`;
-  };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Shift') {
+      updateShiftState(KEY_DOWN);
+    }
+  }
+
+  const handleKeyUp = (event) => {
+    const executing = event.key === 'Enter' && shiftState !== KEY_DOWN;
+
+    if (event.key === 'Shift') {
+      updateShiftState(KEY_UP);
+    }
+
+    if (executing && event.target.value.trim().toLowerCase() === '> clear') {
+      clearLog();
+      event.target.value = '';
+    } else if (executing) {
+      appendToChatLog(event);
+    }
+  }
 
   const appendToChatLog = (event) => {
-    if (event.key === 'Enter') {
-      if (event.target.value.trim() !== '') {
-        updateChatLog([
-          ...chatLog,
-          {
-            message: event.target.value.trim(),
-            date: new Date().toLocaleTimeString()
-          }
-        ]);
-      }
-      event.target.value = '';
+    if (event.target.value.trim() !== '') {
+      updateChatLog([
+        ...chatLog,
+        {
+          message: event.target.value.trim(),
+          date: new Date().toLocaleTimeString()
+        }
+      ]);
     }
+    event.target.value = '';
   }
 
   const clearLog = () => { updateChatLog([]); }
@@ -50,7 +70,8 @@ function App() {
           type="text"
           id="chat-input"
           placeholder="Type your message. Press enter."
-          onKeyUp={(e) => appendToChatLog(e)}
+          onKeyUp={(e) => handleKeyUp(e)}
+          onKeyDown={(e) => handleKeyDown(e)}
           rows="5"
         />
       </div>

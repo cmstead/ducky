@@ -4,4 +4,6 @@ It's a chat... bot? It doesn't talk. It doesn't log your conversation. It's not 
 
 ## To Do
 
-- [ ] Handle styling for small-medium to small screens so it is readable
+- [x] Handle styling for small-medium to small screens so it is readable
+- [x] Shift-enter to add a new line in the textarea
+- [ ] Add _(listening)_ after a certain amount of inactivity
