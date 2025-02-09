@@ -6,12 +6,21 @@
     text-align: center;
   }
 
+  .listening {
+    font-size: 0.9rem;
+    color: #999;
+    display: inline-block;
+    padding: 0.3rem 0 0 0;
+    margin: 0;
+  }
+
   .clear-log {
-    text-align: right;
     margin-top: 7px;
     clear: both;
+    height: 1.6rem;
 
     button {
+      float: right;
       background-color: white;
       border-radius: 3px;
       border: 1px solid #ccc;
@@ -25,6 +34,7 @@
 
     textarea {
       text-align: left;
+      padding: 5px;
       width: 100%;
     }
   }
@@ -33,28 +43,35 @@
     font-size: 0.8em;
   }
 
-  .chat-msg {
-    clear: both;
-    padding-top: 10px;
+  #chat-log {
+    max-height: 50vh;
+    overflow: auto;
+    scrollbar-color: #ccc white;
+    scrollbar-width: thin;
 
-    .date {
-      font-size: 0.8em;
-      color: #999;
-      margin: 5px 0;
-      line-height: 1em;
-      width: 17%;
-      float: left;
-    }
+    .chat-msg {
+      clear: both;
+      padding-top: 10px;
 
-    .message {
-      float: left;
-      width: 80%;
-      padding: 0;
+      .date {
+        font-size: 0.8em;
+        color: #999;
+        margin: 5px 0;
+        line-height: 1em;
+        width: 17%;
+        float: left;
+      }
 
-      p {
-        line-height: 1.4em;
+      .message {
+        float: left;
+        width: 80%;
         padding: 0;
-        margin: 0;
+
+        p {
+          line-height: 1.4em;
+          padding: 0;
+          margin: 0;
+        }
       }
     }
   }
@@ -75,17 +92,20 @@
 @media screen and (max-width: 640px) {
   .App {
     width: 90%;
-    .chat-msg {
-      .date {
-        width: 100%;
-        float: none;
-      }
 
-      .message {
-        width: 100%;
-        float: none;
-      }
+    .chat-log {
+      .chat-msg {
+        .date {
+          width: 100%;
+          float: none;
+        }
 
+        .message {
+          width: 100%;
+          float: none;
+        }
+
+      }
     }
   }
 }
