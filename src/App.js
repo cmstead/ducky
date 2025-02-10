@@ -2,30 +2,40 @@ import "./App.scss";
 import { useState, useRef, useEffect } from "react";
 import useStoredState from "./useStoredState";
 import Markdown from "react-markdown";
+import React from "react";
+
+/** @typedef{import("./useStoredState.js")} StoredStateTuple */
+/** @typedef{{date: string; message: string}} Message*/
+/** @typedef{{key: string; target: {value: string; name: string;}}} Event */
 
 const KEY_UP = 'up';
 const KEY_DOWN = 'down';
 
+function getTimeout(updateListeningState) {
+  return setTimeout(() => updateListeningState(true), 15000)
+}
+
 function App() {
-  const [chatLog, updateChatLog] = useStoredState('duckyState', []);
+  const /** @type{Message[]} */ initialChatLog = [];
+
+  const [chatLog, updateChatLog] = useStoredState('duckyState', initialChatLog);
   const [shiftState, updateShiftState] = useState(KEY_UP);
   const [showListening, updateListeningState] = useState(false);
-  const [listeningTimeout, updateListeningTimeout] = useState(null);
+  const [listeningTimeout, updateListeningTimeout] = useState(getTimeout(updateListeningState));
 
   function setListeningTimeout() {
-    console.log('starting listening timeout');
     clearTimeout(listeningTimeout);
 
     updateListeningState(false);
-    updateListeningTimeout(setTimeout(() => updateListeningState(true), 15000));
+    updateListeningTimeout(getTimeout(updateListeningState));
   }
 
-  const chatRef = useRef(null);
-  const inputBox = useRef(null);
+  let chatRef = useRef(null);
+  let inputBoxRef = useRef(null);
 
   useEffect(() => {
-    if(inputBox.current) {
-      inputBox.current.focus();
+    if (inputBoxRef.current) {
+      inputBoxRef.current.focus();
     }
 
     if (chatRef.current) {
@@ -36,13 +46,13 @@ function App() {
     }
   }, [chatLog]);
 
-  const handleKeyDown = (event) => {
+  const handleKeyDown = (/** @type{Event} */ event) => {
     if (event.key === 'Shift') {
       updateShiftState(KEY_DOWN);
     }
   }
 
-  const handleKeyUp = (event) => {
+  const handleKeyUp = (/** @type{Event} */ event) => {
     const executing = event.key === 'Enter' && shiftState !== KEY_DOWN;
 
     setListeningTimeout();
@@ -59,7 +69,7 @@ function App() {
     }
   }
 
-  const appendToChatLog = (event) => {
+  const appendToChatLog = (/** @type{Event} */ event) => {
     if (event.target.value.trim() !== '') {
       updateChatLog([
         ...chatLog,
@@ -100,13 +110,12 @@ function App() {
       </div>
       <div id="chat-input">
         <textarea
-          ref={inputBox}
-          type="text"
+          ref={inputBoxRef}
           id="chat-input"
           placeholder="Type then press enter."
           onKeyUp={(e) => handleKeyUp(e)}
           onKeyDown={(e) => handleKeyDown(e)}
-          rows="5"
+          rows={5}
         />
       </div>
       <div className="info">This supports markdown.</div>

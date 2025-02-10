@@ -1,36 +1,54 @@
 import { useState } from 'react'
 
-function mergeInitialState (storedState, initialState) {
-    const storedStateIsSafe = typeof storedState === 'object';
-    const initialStateIsSafe = typeof initialState === 'object';
-  if (storedStateIsSafe && initialStateIsSafe && Array.isArray(storedState) === Array.isArray(initialState)) {  
-    return [
+/** @typedef{object|[]} State */
+/** @typedef{[?State, Function]} StoredStateResult */
+
+function mergeInitialState(
+  /** @type{State} */ storedState,
+  /** @type{State} */ initialState
+) {
+  const storedStateIsSafe = typeof storedState === 'object';
+  const initialStateIsSafe = typeof initialState === 'object';
+  const statesAreMergeSafe = storedStateIsSafe && initialStateIsSafe;
+
+  let /** @type{?State} */ mergedState = null;
+
+  if (statesAreMergeSafe && Array.isArray(storedState) === Array.isArray(initialState)) {
+    mergedState = [
       ...initialState,
       ...storedState
     ];
-  } else if(storedStateIsSafe && initialStateIsSafe) {
-    return {
+  } else if (statesAreMergeSafe) {
+    mergedState = {
       ...initialState,
       ...storedState
     };
 
   }
 
-  return storedState
+  return mergedState
 }
 
-export default function useStoredState (stateName, initialState) {
+
+export default function useStoredState(
+  /** @type{string} */ stateName,
+  /** @type{State} */ initialState
+) {
   const storedState = localStorage.getItem(stateName)
   const pageStateString = storedState
     ? storedState
     : JSON.stringify(initialState)
+
   const pageState = mergeInitialState(JSON.parse(pageStateString), initialState)
   const [state, setState] = useState(pageState)
 
-  function setStoredState (newState) {
+  function setStoredState(newState) {
     localStorage.setItem(stateName, JSON.stringify(newState))
     setState(newState)
   }
 
-  return [state, setStoredState]
+  /** @type{StoredStateResult} */
+  const result = [state, setStoredState]
+
+  return result;
 }
