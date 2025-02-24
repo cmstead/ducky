@@ -1,7 +1,7 @@
 import { useState } from 'react'
 
 /** @typedef{object|[]} State */
-/** @typedef{[?State, Function]} StoredStateResult */
+/** @typedef{[?State, (state: State) => void]} StoredStateResult */
 
 function mergeInitialState(
   /** @type{State} */ storedState,
