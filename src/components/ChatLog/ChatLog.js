@@ -1,10 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import ChatNode from "../ChatNode/ChatNode.js";
 
+/** @typedef{import("../../App.js").Ref} */
+/**
+ * @typedef {object} DivRef
+ * @extends Ref
+ * @property {HTMLDivElement} current
+ */
 /** @typedef{import("../../App.js").Message} Message */
 
 export default function ChatLog({ chatLog }) {
-    let chatRef = useRef(null);
+    let /** @type{?DivRef} */ chatRef = useRef(null);
 
     useEffect(() => {
         if (chatRef.current) {

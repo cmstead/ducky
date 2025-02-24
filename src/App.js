@@ -13,7 +13,6 @@ import { confirm } from "./services/confirmService.js";
  * @extends Ref
  * @property {HTMLTextAreaElement} current
 */
-
 /** @typedef{{date: string; message: string}} Message*/
 
 function App() {

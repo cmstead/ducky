@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import getKeyEventHandlers from "./key-event-handlers.js";
 
 /** @typedef{import("../../useStoredState.js")} State */
