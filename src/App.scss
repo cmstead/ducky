@@ -51,7 +51,31 @@
 
     .chat-msg {
       clear: both;
-      padding-top: 10px;
+      padding: 3px;
+
+      button.option {
+        visibility: hidden;
+        background-color: transparent;
+        border: 0;
+        padding: 0px;
+        margin: 0 0 0 7px;
+        color: #f0d000;
+        font-size: 1.1rem;
+
+        &:hover {
+          color: #d34300;
+          cursor: pointer;
+        }
+      }
+
+      &:hover {
+        background-color: #f9f9f9;
+
+        button.option {
+          visibility: visible; 
+
+        }
+      }
 
       .date {
         font-size: 0.8em;
@@ -64,7 +88,7 @@
 
       .message {
         float: left;
-        width: 80%;
+        width: 77%;
         padding: 0;
 
         p {

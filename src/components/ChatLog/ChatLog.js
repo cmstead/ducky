@@ -9,7 +9,7 @@ import ChatNode from "../ChatNode/ChatNode.js";
  */
 /** @typedef{import("../../App.js").Message} Message */
 
-export default function ChatLog({ chatLog }) {
+export default function ChatLog({ chatLog, deleteChatNode }) {
     let /** @type{?DivRef} */ chatRef = useRef(null);
 
     useEffect(() => {
@@ -23,7 +23,7 @@ export default function ChatLog({ chatLog }) {
 
     return (
         <div id="chat-log" ref={chatRef}>
-            {chatLog.map((/** @type{Message} */ msg, i) => (<ChatNode key={i} message={msg} />))}
+            {chatLog.map((/** @type{Message} */ msg, i) => (<ChatNode key={i} index={i} message={msg} deleteChatNode={deleteChatNode} />))}
         </div>
     )
 }

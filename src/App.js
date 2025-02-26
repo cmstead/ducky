@@ -28,6 +28,11 @@ function App() {
 
   }, [chatLog]);
 
+  const deleteChatNode = (index) => {
+    const newChatLog = chatLog.filter(( /** @type{unknown} */ _, /** @type{number} */ i) => i !== index);
+    updateChatLog(newChatLog);
+  }
+
   const clearLog = () => {
     confirm("Are you sure you want to clear the chat log?")
       .then(() => updateChatLog([]))
@@ -39,7 +44,7 @@ function App() {
       <header className="App-header">
         <h1>Ducky.</h1>
       </header>
-      <ChatLog chatLog={chatLog} />
+      <ChatLog chatLog={chatLog} deleteChatNode={deleteChatNode} />
       <ChatBox chatLog={chatLog} clearLog={clearLog} updateChatLog={updateChatLog} inputBoxRef={inputBoxRef} />
     </div>
   );
