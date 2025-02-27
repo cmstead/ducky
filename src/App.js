@@ -13,7 +13,7 @@ import { confirm } from "./services/confirmService.js";
  * @extends Ref
  * @property {HTMLTextAreaElement} current
 */
-/** @typedef{{date: string; message: string}} Message*/
+/** @typedef{{date: string; message: string, selected: boolean }} Message*/
 
 function App() {
   const /** @type{Message[]} */ initialChatLog = [];
@@ -26,7 +26,19 @@ function App() {
       inputBoxRef.current.focus();
     }
 
-  }, [chatLog]);
+  }, [chatLog.length]);
+
+  const toggleChatNodeSelection = (index) => {
+    const newChatLog = chatLog.map(( /** @type{Message} */ msg, /** @type{number} */ i) => {
+      if (i === index) {
+        return { ...msg, selected: !msg.selected };
+      }
+
+      return msg;
+    });
+
+    updateChatLog(newChatLog);
+  }
 
   const deleteChatNode = (index) => {
     const newChatLog = chatLog.filter(( /** @type{unknown} */ _, /** @type{number} */ i) => i !== index);
@@ -34,8 +46,8 @@ function App() {
   }
 
   const clearLog = () => {
-    confirm("Are you sure you want to clear the chat log?")
-      .then(() => updateChatLog([]))
+    confirm("Are you sure you want to clear unpinned messages?")
+      .then(() => updateChatLog(chatLog.filter(( /** @type{Message} */ msg) => msg.selected)))
       .catch(() => { });
   }
 
@@ -44,8 +56,11 @@ function App() {
       <header className="App-header">
         <h1>Ducky.</h1>
       </header>
-      <ChatLog chatLog={chatLog} deleteChatNode={deleteChatNode} />
-      <ChatBox chatLog={chatLog} clearLog={clearLog} updateChatLog={updateChatLog} inputBoxRef={inputBoxRef} />
+      <ChatLog chatLog={chatLog} deleteChatNode={deleteChatNode} toggleChatNodeSelection={toggleChatNodeSelection} />
+      <ChatBox chatLog={chatLog}
+        clearLog={clearLog}
+        updateChatLog={updateChatLog}
+        inputBoxRef={inputBoxRef} />
     </div>
   );
 }

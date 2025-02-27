@@ -9,21 +9,27 @@ import ChatNode from "../ChatNode/ChatNode.js";
  */
 /** @typedef{import("../../App.js").Message} Message */
 
-export default function ChatLog({ chatLog, deleteChatNode }) {
+export default function ChatLog({ chatLog, deleteChatNode, toggleChatNodeSelection }) {
     let /** @type{?DivRef} */ chatRef = useRef(null);
 
-    useEffect(() => {
+    useEffect((...args) => {
         if (chatRef.current) {
             chatRef.current.scrollTo({
                 top: chatRef.current.scrollHeight,
                 behavior: 'smooth'
             });
         }
-    }, [chatLog]);
+    }, [chatLog.length]);
 
     return (
         <div id="chat-log" ref={chatRef}>
-            {chatLog.map((/** @type{Message} */ msg, i) => (<ChatNode key={i} index={i} message={msg} deleteChatNode={deleteChatNode} />))}
+            {chatLog.map((/** @type{Message} */ msg, i) => (
+                <ChatNode key={i}
+                    index={i}
+                    message={msg}
+                    deleteChatNode={deleteChatNode}
+                    toggleChatNodeSelection={toggleChatNodeSelection} />
+            ))}
         </div>
     )
 }
