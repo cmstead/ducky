@@ -1,11 +1,11 @@
 import "./App.scss";
 import { useRef, useEffect } from "react";
-import useStoredState from "./useStoredState";
 import React from "react";
 
 import ChatLog from "./components/ChatLog/ChatLog.js";
 import ChatBox from "./components/ChatBox/ChatBox.js";
 import { confirm } from "./services/confirmService.js";
+import useUndoableState from "./hooks/useUndoableState.js";
 
 /** @typedef{{ current: unknown }} Ref */
 /** 
@@ -17,9 +17,32 @@ import { confirm } from "./services/confirmService.js";
 
 function App() {
   const /** @type{Message[]} */ initialChatLog = [];
-  const [chatLog, updateChatLog] = useStoredState('duckyState', initialChatLog);
+  const [chatLog, updateChatLog, undo] = useUndoableState('duckyState', initialChatLog);
 
   let /** @type{?TextareaRef} */ inputBoxRef = useRef(null);
+  const keypressSet = useRef(new Set());
+
+  useEffect(() => {
+    const keysPressed = keypressSet.current;
+
+    const handleKeyDown = (/** @type{KeyEvent} */ event) => {
+      keysPressed.add(event.key.toLowerCase());
+
+      if ((keysPressed.has('control') || keysPressed.has('command') || keysPressed.has('meta')) && keysPressed.has('z')) {
+        event.stopPropagation();
+        event.preventDefault();
+
+        undo();
+      }
+    }
+
+    const handleKeyUp = (/** @type{KeyEvent} */ event) => {
+      keysPressed.clear();
+    }
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+  }, [undo]);
 
   useEffect(() => {
     if (inputBoxRef.current) {
@@ -60,7 +83,8 @@ function App() {
       <ChatBox chatLog={chatLog}
         clearLog={clearLog}
         updateChatLog={updateChatLog}
-        inputBoxRef={inputBoxRef} />
+        inputBoxRef={inputBoxRef}
+        undo={undo} />
     </div>
   );
 }

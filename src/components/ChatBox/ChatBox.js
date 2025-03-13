@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import getKeyEventHandlers from "./key-event-handlers.js";
 
-/** @typedef{import("../../useStoredState.js")} State */
-/** @typedef{import("../../useStoredState.js")} StoredStateTuple */
+/** @typedef{import("../../hooks/useStoredState.js")} State */
+/** @typedef{import("../../hooks/useStoredState.js")} StoredStateTuple */
 /** @typedef{{key: string; target: {value: string; name: string;}}} KeyEvent */
 
-export default function ChatBox({ chatLog, clearLog, updateChatLog, inputBoxRef }) {
+export default function ChatBox({ chatLog, clearLog, updateChatLog, inputBoxRef, undo }) {
     const [showListening, updateListeningState] = useState(false);
 
     const appendToChatLog = (/** @type{KeyEvent} */ event) => {
