@@ -1,11 +1,11 @@
 import React from "react";
 import Markdown from "react-markdown";
 
-export default function ChatNode({ message: msg, index, deleteChatNode, toggleChatNodeSelection }) {
+export default function ChatNode({ message: msg, index, deleteChatNode, setChatNodeSelection }) {
 
-    const pinNode = (e) => {
+    const pinNode = (e, pinned) => {
         e.stopPropagation();
-        toggleChatNodeSelection(index);
+        setChatNodeSelection(index, pinned);
     }
 
     const deleteNode = (e) => {
@@ -13,12 +13,12 @@ export default function ChatNode({ message: msg, index, deleteChatNode, toggleCh
         if (!msg.selected) {
             deleteChatNode(index);
         } else {
-            pinNode(e);
+            pinNode(e, false);
         }
     }
 
     return (
-        <div key={index} className={`chat-msg ${msg.selected ? 'selected-msg' : ''}`} onClick={pinNode}>
+        <div key={index} className={`chat-msg ${msg.selected ? 'selected-msg' : ''}`} onClick={(e) => pinNode(e, true)}>
             <div className="date">{msg.date}</div>
             <div className="message">
                 <Markdown>{msg.message}</Markdown>

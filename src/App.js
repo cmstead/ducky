@@ -28,10 +28,10 @@ function App() {
 
   }, [chatLog.length]);
 
-  const toggleChatNodeSelection = (index) => {
+  const setChatNodeSelection = (index, selected) => {
     const newChatLog = chatLog.map(( /** @type{Message} */ msg, /** @type{number} */ i) => {
       if (i === index) {
-        return { ...msg, selected: !msg.selected };
+        return { ...msg, selected: selected };
       }
 
       return msg;
@@ -56,7 +56,7 @@ function App() {
       <header className="App-header">
         <h1>Ducky.</h1>
       </header>
-      <ChatLog chatLog={chatLog} deleteChatNode={deleteChatNode} toggleChatNodeSelection={toggleChatNodeSelection} />
+      <ChatLog chatLog={chatLog} deleteChatNode={deleteChatNode} setChatNodeSelection={setChatNodeSelection} />
       <ChatBox chatLog={chatLog}
         clearLog={clearLog}
         updateChatLog={updateChatLog}

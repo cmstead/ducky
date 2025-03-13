@@ -9,7 +9,7 @@ import ChatNode from "../ChatNode/ChatNode.js";
  */
 /** @typedef{import("../../App.js").Message} Message */
 
-export default function ChatLog({ chatLog, deleteChatNode, toggleChatNodeSelection }) {
+export default function ChatLog({ chatLog, deleteChatNode, setChatNodeSelection }) {
     let /** @type{?DivRef} */ chatRef = useRef(null);
 
     useEffect((...args) => {
@@ -28,7 +28,7 @@ export default function ChatLog({ chatLog, deleteChatNode, toggleChatNodeSelecti
                     index={i}
                     message={msg}
                     deleteChatNode={deleteChatNode}
-                    toggleChatNodeSelection={toggleChatNodeSelection} />
+                    setChatNodeSelection={setChatNodeSelection} />
             ))}
         </div>
     )
