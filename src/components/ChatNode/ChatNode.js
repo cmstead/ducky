@@ -1,5 +1,6 @@
 import React from "react";
 import Markdown from "react-markdown";
+import { confirm } from "../../services/confirmService";
 
 export default function ChatNode({ message: msg, index, deleteChatNode, setChatNodeSelection }) {
 
@@ -11,7 +12,11 @@ export default function ChatNode({ message: msg, index, deleteChatNode, setChatN
     const deleteNode = (e) => {
         e.stopPropagation();
         if (!msg.selected) {
-            deleteChatNode(index);
+            confirm("Are you sure you want to delete this message?")
+                .then(() => deleteChatNode(index))
+                .catch(() => {
+                    console.log("Delete cancelled");
+                });
         } else {
             pinNode(e, false);
         }
