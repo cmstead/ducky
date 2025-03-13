@@ -5,8 +5,13 @@ import { confirm } from "../../services/confirmService";
 export default function ChatNode({ message: msg, index, deleteChatNode, setChatNodeSelection }) {
 
     const pinNode = (e, pinned) => {
-        e.stopPropagation();
-        setChatNodeSelection(index, pinned);
+        if (e.type === 'contextmenu') {
+            e.stopPropagation();
+            e.preventDefault();
+            setChatNodeSelection(index, pinned);
+        } else {
+            setChatNodeSelection(index, pinned);
+        }
     }
 
     const deleteNode = (e) => {
@@ -23,7 +28,7 @@ export default function ChatNode({ message: msg, index, deleteChatNode, setChatN
     }
 
     return (
-        <div key={index} className={`chat-msg ${msg.selected ? 'selected-msg' : ''}`} onClick={(e) => pinNode(e, true)}>
+        <div key={index} title={msg.selected ? "" : "Right click/command click to pin"} className={`chat-msg ${msg.selected ? 'selected-msg' : ''}`} onContextMenu={(e) => pinNode(e, true)}>
             <div className="date">{msg.date}</div>
             <div className="message">
                 <Markdown>{msg.message}</Markdown>
